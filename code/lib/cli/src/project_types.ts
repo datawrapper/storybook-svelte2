@@ -5,6 +5,11 @@ function ltMajor(versionRange: string, major: number) {
   return validRange(versionRange) && minVersion(versionRange).major < major;
 }
 
+function gtMajor(versionRange: string, major: number) {
+  // Uses validRange to avoid a throw from minVersion if an invalid range gets passed
+  return validRange(versionRange) && minVersion(versionRange).major > major;
+}
+
 function eqMajor(versionRange: string, major: number) {
   // Uses validRange to avoid a throw from minVersion if an invalid range gets passed
   return validRange(versionRange) && minVersion(versionRange).major === major;
@@ -15,6 +20,7 @@ export type SupportedRenderers =
   | 'react'
   | 'cra'
   | 'react-native'
+  | 'nextjs'
   | 'vue'
   | 'vue3'
   | 'angular'
@@ -35,6 +41,7 @@ export const SUPPORTED_RENDERERS: SupportedRenderers[] = [
   'react',
   'cra',
   'react-native',
+  'nextjs',
   'vue',
   'vue3',
   'angular',
@@ -58,6 +65,7 @@ export enum ProjectType {
   REACT_NATIVE = 'REACT_NATIVE',
   REACT_PROJECT = 'REACT_PROJECT',
   WEBPACK_REACT = 'WEBPACK_REACT',
+  NEXTJS = 'NEXTJS',
   VUE = 'VUE',
   VUE3 = 'VUE3',
   SFC_VUE = 'SFC_VUE',
@@ -147,6 +155,15 @@ export const supportedTemplates: TemplateConfiguration[] = [
   {
     preset: ProjectType.EMBER,
     dependencies: ['ember-cli'],
+    matcherFunction: ({ dependencies }) => {
+      return dependencies.every(Boolean);
+    },
+  },
+  {
+    preset: ProjectType.NEXTJS,
+    dependencies: {
+      next: (versionRange) => eqMajor(versionRange, 9) || gtMajor(versionRange, 9),
+    },
     matcherFunction: ({ dependencies }) => {
       return dependencies.every(Boolean);
     },

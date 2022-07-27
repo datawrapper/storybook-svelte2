@@ -83,6 +83,15 @@ const getFrameworkDetails = (
     };
   }
 
+  if (renderer === 'nextjs') {
+    return {
+      packages: [rendererPackage],
+      framework: rendererPackagePath,
+      rendererId: 'react',
+      type: 'framework',
+    };
+  }
+
   if (isKnownFramework) {
     return {
       packages: [frameworkPackage],
