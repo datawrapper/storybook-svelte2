@@ -51,6 +51,7 @@ const getFrameworkDetails = (
   builder?: string;
   framework?: string;
   renderer?: string;
+  rendererId: SupportedRenderers;
 } => {
   const frameworkPackage = `@storybook/${renderer}-${builder}`;
   const frameworkPackagePath = pnp ? wrapForPnp(frameworkPackage) : frameworkPackage;
@@ -68,6 +69,16 @@ const getFrameworkDetails = (
     return {
       packages: [rendererPackage],
       framework: rendererPackagePath,
+      rendererId: 'angular',
+      type: 'framework',
+    };
+  }
+
+  if (renderer === 'cra') {
+    return {
+      packages: [rendererPackage],
+      framework: rendererPackagePath,
+      rendererId: 'react',
       type: 'framework',
     };
   }
@@ -76,6 +87,7 @@ const getFrameworkDetails = (
     return {
       packages: [frameworkPackage],
       framework: frameworkPackagePath,
+      rendererId: renderer,
       type: 'framework',
     };
   }
@@ -85,6 +97,7 @@ const getFrameworkDetails = (
       packages: [rendererPackage, builderPackage],
       builder: builderPackagePath,
       renderer: rendererPackagePath,
+      rendererId: renderer,
       type: 'renderer',
     };
   }
@@ -97,13 +110,13 @@ const getFrameworkDetails = (
 const stripVersions = (addons: string[]) => addons.map((addon) => getPackageDetails(addon)[0]);
 
 const hasInteractiveStories = (framework: SupportedRenderers) =>
-  ['react', 'angular', 'preact', 'svelte', 'vue', 'vue3', 'html'].includes(framework);
+  ['cra', 'react', 'angular', 'preact', 'svelte', 'vue', 'vue3', 'html'].includes(framework);
 
 export async function baseGenerator(
   packageManager: JsPackageManager,
   npmOptions: NpmOptions,
   { language, builder = CoreBuilder.Webpack5, pnp, commonJs }: GeneratorOptions,
-  renderer: SupportedRenderers,
+  input: SupportedRenderers,
   options: FrameworkOptions = defaultOptions
 ) {
   const {
@@ -134,7 +147,7 @@ export async function baseGenerator(
     ...extraAddonPackages,
   ];
 
-  if (hasInteractiveStories(renderer)) {
+  if (hasInteractiveStories(input)) {
     addons.push('@storybook/addon-interactions');
     addonPackages.push('@storybook/addon-interactions', '@storybook/testing-library');
   }
@@ -151,11 +164,12 @@ export async function baseGenerator(
   const {
     packages: frameworkPackages,
     type,
+    rendererId,
     // @ts-ignore
     renderer: rendererInclude, // deepscan-disable-line UNUSED_DECL
     framework: frameworkInclude,
     builder: builderInclude,
-  } = getFrameworkDetails(renderer, builder, pnp);
+  } = getFrameworkDetails(input, builder, pnp);
 
   // TODO: We need to start supporting this at some point
   if (type === 'renderer') {
@@ -199,10 +213,10 @@ export async function baseGenerator(
       : {}),
   });
 
-  await configurePreview(renderer, options.commonJs);
+  await configurePreview(input, options.commonJs);
 
   if (addComponents) {
-    copyComponents(renderer, language);
+    copyComponents(rendererId, language);
   }
 
   // FIXME: temporary workaround for https://github.com/storybookjs/storybook/issues/17516
