@@ -1,0 +1,110 @@
+{
+  "name": "@storybook/nextjs",
+  "// BEFORE": "Check version before merging",
+  "version": "7.0.0-alpha.21",
+  "description": "Storybook for Next.js",
+  "keywords": [
+    "storybook",
+    "nextjs"
+  ],
+  "homepage": "https://github.com/storybookjs/storybook/tree/next/code/frameworks/nextjs",
+  "bugs": {
+    "url": "https://github.com/storybookjs/storybook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/storybook.git",
+    "directory": "code/frameworks/nextjs"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./preset": {
+      "require": "./dist/preset.js",
+      "import": "./dist/preset.mjs",
+      "types": "./dist/preset.d.ts"
+    },
+    "./package.json": {
+      "require": "./package.json",
+      "import": "./package.json",
+      "types": "./package.json"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "types/**/*",
+    "README.md",
+    "*.js",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "check": "tsc --noEmit",
+    "prepare": "esrun ../../../scripts/prepare/bundle.ts"
+  },
+  "dependencies": {
+    "@storybook/addons": "7.0.0-alpha.21",
+    "@storybook/builder-webpack5": "7.0.0-alpha.21",
+    "@storybook/core-common": "7.0.0-alpha.21",
+    "@storybook/node-logger": "7.0.0-alpha.21",
+    "@storybook/preset-react-webpack": "7.0.0-alpha.21",
+    "@storybook/react": "7.0.0-alpha.21",
+    "@types/node": "^14.14.20 || ^16.0.0",
+    "fs-extra": "^9.0.1",
+    "image-size": "^1.0.0",
+    "loader-utils": "^3.2.0",
+    "pnp-webpack-plugin": "^1.7.0",
+    "semver": "^7.3.5",
+    "tsconfig-paths": "^4.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.5.2"
+  },
+  "devDependencies": {
+    "@digitak/esrun": "^3.2.2",
+    "@storybook/addon-actions": "7.0.0-alpha.21",
+    "next": "^12.2.4",
+    "nextv10": "npm:next@10.0.0",
+    "nextv11": "npm:next@11.0.0",
+    "nextv9": "npm:next@9.0.0",
+    "typescript": "~4.6.3",
+    "webpack": "^5.65.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.11.5",
+    "next": "^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "webpack": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bundler": {
+    "entries": [
+      "./src/index.ts",
+      "./src/preset.ts"
+    ],
+    "platform": "node"
+  },
+  "// BEFORE 2": "Ask about gitHead"
+}
