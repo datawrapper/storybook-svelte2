@@ -12,12 +12,12 @@ function cleanUpPreviousStory() {
   previousComponent = null;
 }
 
-function mountView({ Component, target, data, on, Wrapper, WrapperData }) {
+function mountView({ Component, target, data, on, Wrapper, WrapperData, store }) {
   let component;
 
   if (Wrapper) {
     const fragment = document.createDocumentFragment();
-    component = new Component({ target: fragment, data });
+    component = new Component({ target: fragment, data, store });
 
     const wrapper = new Wrapper({
       target,
@@ -28,7 +28,7 @@ function mountView({ Component, target, data, on, Wrapper, WrapperData }) {
       wrapper.destroy(true);
     });
   } else {
-    component = new Component({ target, data });
+    component = new Component({ target, store });
   }
 
   if (on) {
@@ -54,6 +54,7 @@ export default function render({
     Component,
     /** @type {any} */
     data,
+    store,
     /** @type {{[string]: () => {}}} Attach svelte event handlers */
     on,
     Wrapper,
@@ -79,7 +80,7 @@ export default function render({
 
   target.innerHTML = '';
 
-  mountView({ Component, target, data, on, Wrapper, WrapperData });
+  mountView({ Component, target, data, store, on, Wrapper, WrapperData });
 
   showMain();
 }

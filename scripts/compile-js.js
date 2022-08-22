@@ -31,7 +31,7 @@ function handleExit(code, errorCallback) {
 }
 
 function babelify(options = {}) {
-  const { watch = false, silent = true, errorCallback } = options;
+  const { watch = false, silent = false, errorCallback } = options;
 
   if (!fs.existsSync('src')) {
     if (!silent) {
