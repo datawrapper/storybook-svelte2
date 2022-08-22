@@ -28,7 +28,7 @@ function mountView({ Component, target, data, on, Wrapper, WrapperData, store })
       wrapper.destroy(true);
     });
   } else {
-    component = new Component({ target, store });
+    component = new Component({ target, data, store });
   }
 
   if (on) {

@@ -1,6 +1,6 @@
 {
   "name": "@datawrapper/storybook-svelte2",
-  "version": "5.0.12",
+  "version": "5.0.13",
   "description": "Storybook for Svelte: Develop Svelte Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
